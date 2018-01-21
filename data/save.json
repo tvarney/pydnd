@@ -1,0 +1,25 @@
+{
+  "players":[
+    {
+      "name":"Lyra Al'Thor",
+      "race": "Human",
+      "speed": 30,
+      "levels": [
+        {"class": "Rogue", "level": 12}
+      ],
+      "hp": {"max": 100, "current": 90},
+      "mp": {"max": 0, "current": 0},
+      "init_mod": 2,
+
+      "str": {"level": 10},
+      "dex": {"level": 16, "racial": 2},
+      "con": {"level": 10},
+      "int": {"level": 12},
+      "wis": {"level": 10},
+      "cha": {"level": 13},
+
+      "feats": ["improved_initiative", ["weapon_finesse", "rapier"]]
+    }
+  ]
+
+}
