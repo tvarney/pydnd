@@ -5,11 +5,23 @@ if TYPE_CHECKING:
 
 
 class Money(object):
+    @staticmethod
+    def from_json(json_data: 'Dict'):
+        if type(json_data) == dict:
+            return Money(**json_data)
+        if type(json_data) == str:
+            raise NotImplementedError("Value string parsing not implemented")
+        if type(json_data) == int or type(json_data) == float:
+            raise NotImplementedError("Value numeric parsing not implemented")
+
     def __init__(self, **kwargs) -> None:
-        self._pp = int(kwargs.get('pp', 0))
-        self._gp = int(kwargs.get('gp', 0))
-        self._sp = int(kwargs.get('sp', 0))
-        self._cp = int(kwargs.get('cp', 0))
+        self._pp = int(kwargs.pop('pp', 0))
+        self._gp = int(kwargs.pop('gp', 0))
+        self._sp = int(kwargs.pop('sp', 0))
+        self._cp = int(kwargs.pop('cp', 0))
+
+        if len(kwargs.keys()) > 0:
+            raise KeyError("Unknown keyword arguments: {}".format(", ".join(kwargs.keys())))
 
     def cp(self) -> int:
         return self._cp
@@ -25,6 +37,18 @@ class Money(object):
 
     def weight(self) -> float:
         return (self._cp + self._sp + self._gp + self._pp) * 0.02
+
+    def to_json(self) -> 'Dict':
+        d = dict()
+        if self._pp != 0:
+            d["pp"] = self._pp
+        if self._gp != 0:
+            d["gp"] = self._gp
+        if self._sp != 0:
+            d["sp"] = self._sp
+        if self._cp != 0:
+            d["cp"] = self._cp
+        return d
 
     def __str__(self):
         parts = list()
@@ -76,6 +100,19 @@ class Category(object):
             category_obj = category_obj._subcategories[subcategory]
         category_obj._items.remove(item)
 
+    def build_str(self, space: str = "", details: bool = False) -> str:
+        tab = space + "  "
+        parts = ["{}{}:".format(space, self._name)]
+        if len(self._items) > 0:
+            if details:
+                fmt_str = "{}{} - {}, {} lbs"
+                parts.append("\n".join([fmt_str.format(tab, i.name(), i.value(), i.weight()) for i in self._items]))
+            else:
+                parts.append("\n".join(list("{}{}".format(tab, i.name()) for i in self._items)))
+        if len(self._subcategories.keys()):
+            parts.append("\n".join([c.build_str(tab, details) for c in self._subcategories.values()]))
+        return "\n".join(parts)
+
 
 class Item(object):
     All = dict()
@@ -102,8 +139,14 @@ class Item(object):
         if key is None:
             raise KeyError("Missing required field 'key'")
 
+        value = json_data.pop("value", None)
+        if value is None:
+            value = Money()
+        else:
+            value = Money.from_json(value)
+
         name = json_data.pop("name", "")
-        return Item(key, type_, name, **json_data)
+        return Item(key, type_, name, value=value, **json_data)
 
     def __init__(self, key: str, type_: int, name: str, **kwargs) -> None:
         self._key = key
@@ -117,7 +160,7 @@ class Item(object):
         # These are derived from the key
         self._categories = self._key.split('.')
         self._short_key = self._categories.pop()
-        
+
         if len(kwargs.keys()) > 0:
             raise KeyError("Unknown keyword arguments: {}".format(", ".join(kwargs.keys())))
 
@@ -129,6 +172,7 @@ class Item(object):
                 return False, err_str
             raise NotImplementedError("Item Replacement not implemented")
         Item.All[self._key] = self
+        Item.Category.add(self, self.categories())
         return True, err_str
 
     def key(self, full: bool = True) -> str:
@@ -140,11 +184,30 @@ class Item(object):
     def name(self) -> str:
         return self._name
 
+    def weight(self) -> float:
+        return self._weight
+
     def value(self) -> 'Money':
         return self._value
 
     def description(self) -> str:
         return self._desc
 
+    def source(self) -> str:
+        return self._source
+
     def categories(self) -> 'List[str]':
         return self._categories
+
+    def to_json(self) -> 'Dict':
+        d = dict()
+        d["key"] = self._key
+        d["type"] = "Item"
+        d["name"] = self._name
+        d["weight"] = self._weight
+        d["value"] = self._value.to_json()
+        if self._desc != "":
+            d["desc"] = self._desc
+        if self._source != "":
+            d["source"] = self._source
+        return d
