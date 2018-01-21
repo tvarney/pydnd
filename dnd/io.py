@@ -6,7 +6,7 @@ import dnd.item as _item
 class FileData(object):
     def __init__(self) -> None:
         self._log = None
-        self._items = _item.ItemCollection()
+        self.items = _item.ItemCollection()
 
     def log(self, message) -> None:
         if self._log is not None:
@@ -15,7 +15,7 @@ class FileData(object):
             print(message)
 
     def items(self) -> _item.ItemCollection:
-        return self._items
+        return self.items
 
     def load_filename(self, filename: str) -> None:
         with open(filename, "rb") as fp:
@@ -28,7 +28,7 @@ class FileData(object):
                     for index, item_data in enumerate(items):
                         try:
                             item = _item.Item.from_json(item_data)
-                            status, err_msg = self._items.register(item, False)
+                            status, err_msg = self.items.register(item, False)
                             if not status:
                                 self.log("Error while registering item {}: {}".format(index, err_msg))
                         except Exception as e:

@@ -8,6 +8,7 @@ import dnd.io as _io
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Union
+    from dnd.item import Category
     Container = Union[tk.Frame, tk.Tk]
 
 
@@ -15,7 +16,11 @@ class ItemEditWindow(tk.Tk):
     def __init__(self) -> None:
         tk.Tk.__init__(self)
 
+        self._category_lookup = dict()
+        self._root_iid = None
+
         self.minsize(640,480)
+        self._selection = None
 
         menubar = tk.Menu(self)
         file_menu = tk.Menu(menubar, tearoff=0)
@@ -29,6 +34,7 @@ class ItemEditWindow(tk.Tk):
         lbl_list = tk.Label(self, text="Item Selection", anchor='w', justify='left')
         lbl_edit = tk.Label(self, text="Item Edit", anchor='w', justify='left')
         self._tree_categories = ttk.Treeview(self)
+        self._tree_categories.bind('<<TreeviewSelect>>', self._category_selection)
         self._lst_items = tk.Listbox(self)
         self._frm_edit = ItemEditFrame(self, relief='sunken')
 
@@ -48,12 +54,40 @@ class ItemEditWindow(tk.Tk):
 
         self._item_collection = None
 
+    def _category_selection(self, *args, **kwargs):
+        print("ItemEditWindow::_category_selection({}, {})".format(repr(args), repr(kwargs)))
+        iid = self._tree_categories.focus()
+        if iid != self._selection:
+            self._selection = iid
+            print("Selection changed to {}".format(repr(iid)))
+            category = self._category_lookup[iid]
+            self._lst_items.delete(0, 'end')
+            for item in category.items():
+                self._lst_items.insert('end', item.key(False))
+
+    def _insert_category(self, category: 'Category', iid_parent):
+        iid = self._tree_categories.insert(iid_parent, 0, text=category.name())
+        self._category_lookup[iid] = category
+        for next_category in category.subcategories().values():
+            self._insert_category(next_category, iid)
+
     def _load_file(self) -> None:
         filename = filedialog.askopenfilename()
         if filename is not None and filename != "":
             fd = _io.FileData()
             fd.load_filename(filename)
-            self._item_collection = fd._items
+            self._item_collection = fd.items
+
+            # Clear the tree view
+            for iid in self._tree_categories.get_children():
+                self._tree_categories.delete(iid)
+
+            # Insert root node
+            self._root_iid = self._tree_categories.insert("", 0, text="All")
+            self._category_lookup = {self._root_iid: self._item_collection.category()}
+            # Insert all nodes depth first
+            for category in self._item_collection.category().subcategories().values():
+                self._insert_category(category, self._root_iid)
 
     def _save_file(self) -> None:
         print("Save File")
