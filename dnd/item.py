@@ -86,6 +86,12 @@ class Category(object):
     def name(self) -> str:
         return self._name
 
+    def items(self) -> 'List[Item]':
+        return self._items
+
+    def subcategories(self) -> 'Dict[str, Category]':
+        return self._subcategories
+
     def add(self, item: 'Item', category_list: 'List[str]') -> None:
         category_obj = self  # type: Category
         for subcategory in category_list:
@@ -113,11 +119,37 @@ class Category(object):
             parts.append("\n".join([c.build_str(tab, details) for c in self._subcategories.values()]))
         return "\n".join(parts)
 
+    def __str__(self) -> str:
+        return self.build_str("", False)
+
+    def __getitem__(self, key: 'str') -> 'Category':
+        return self._subcategories.__getitem__(key)
+
+
+class ItemCollection(object):
+    def __init__(self) -> None:
+        self._root_category = Category("All")
+        self._all_items = dict()  # type: Dict[str, Item]
+
+    def category(self) -> 'Category':
+        return self._root_category
+
+    def all(self) -> 'Dict[str, Item]':
+        return self._all_items
+
+    def register(self, item: 'Item', replace: bool = False) -> 'Tuple[bool, Optional[str]]':
+        err_str = None
+        if item.key() in self._all_items:
+            err_str = "Item with key={} already exists in Item.All".format(item.key())
+            if not replace:
+                return False, err_str
+            raise NotImplementedError("Item Replacement not implemented")
+        self._all_items[item.key()] = self
+        self._root_category.add(item, item.categories())
+        return True, err_str
+
 
 class Item(object):
-    All = dict()
-    Category = Category("All")
-
     Item = 0
     Weapon = 1
     Armor = 2
@@ -163,17 +195,6 @@ class Item(object):
 
         if len(kwargs.keys()) > 0:
             raise KeyError("Unknown keyword arguments: {}".format(", ".join(kwargs.keys())))
-
-    def register(self, replace: bool = False) -> 'Tuple[bool, Optional[str]]':
-        err_str = None
-        if self._key in Item.All:
-            err_str = "Item with key={} already exists in Item.All".format(self._key)
-            if not replace:
-                return False, err_str
-            raise NotImplementedError("Item Replacement not implemented")
-        Item.All[self._key] = self
-        Item.Category.add(self, self.categories())
-        return True, err_str
 
     def key(self, full: bool = True) -> str:
         return self._key if full else self._short_key
