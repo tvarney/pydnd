@@ -1,6 +1,11 @@
 
 import json
+
 import dnd.item as _item
+
+import typing
+if typing.TYPE_CHECKING:
+    from typing import Optional
 
 
 class FileData(object):
@@ -33,3 +38,42 @@ class FileData(object):
                                 self.log("Error while registering item {}: {}".format(index, err_msg))
                         except Exception as e:
                             self.log("{} while parsing item {}: {}".format(type(e), index, str(e)))
+
+
+class Scanner(object):
+    def __init__(self, data: str) -> None:
+        self._data = data
+        self._len = len(data)
+        self._idx = 0
+
+    def discard_spaces(self) -> None:
+        while self._idx < self._len and self._data[self._idx].isspace():
+            self._idx += 1
+
+    def next_token(self) -> 'Optional[str]':
+        self.discard_spaces()
+        if self._idx >= self._len:
+            return None
+
+        start = self._idx
+        while self._idx < self._len and not self._data[self._idx].isspace():
+            self._idx += 1
+
+        return self._data[start:self._idx]
+
+    def next_int(self, require_space: bool = True):
+        self.discard_spaces()
+        start = self._idx
+
+        # TODO: This
+
+    @property
+    def idx(self) -> int:
+        return self._idx
+
+    @property
+    def current_char(self) -> 'Optional[str]':
+        if self._idx >= self._len:
+            return None
+        return self._data[self._idx]
+

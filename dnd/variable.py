@@ -18,7 +18,7 @@ class Variable(object):
     def __init__(self, **kwargs):
         self._listeners = list()  # type: List[VariableListener]
 
-        listener = kwargs.pop('listener', None)  # type: Optional[VariableListener]
+        listener = kwargs.pop('listener', None)    # type: Optional[VariableListener]
         listeners = kwargs.pop('listeners', None)  # type: Optional[List[VariableListener]]
 
         if listener is not None:

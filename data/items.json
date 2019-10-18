@@ -1,6 +1,6 @@
 {
   "items":[
-    {"key": "gear.shelter.bathtub_collapsable", "name": "Bathtub, Collapsable", "value": {"gp": 15}, "weight": 20,
+    {"key": "gear.shelter.bathtub_collapsible", "name": "Bathtub, Collapsable", "value": {"gp": 15}, "weight": 20,
       "source": "PZO1123 - Ultimate Equipment",
       "description": ""},
     {"key": "gear.shelter.bedroll", "name": "Bedroll", "value": {"sp": 1}, "weight": 5,
