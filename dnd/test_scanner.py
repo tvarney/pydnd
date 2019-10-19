@@ -1,43 +1,43 @@
 
 import pytest
 
-from dnd import io
+from dnd import scanner
 
 
 def test_scanner_discard_spaces():
-    scanner = io.Scanner("    asdf")
-    scanner.discard_spaces()
-    assert scanner.current_char == 'a'
+    s = scanner.Scanner("    one")
+    s.discard_spaces()
+    assert s.current_char == 'o'
 
 
 def test_scanner_next_token():
-    scanner = io.Scanner(" one two three ")
-    assert scanner.next_token() == "one"
-    assert scanner.next_token() == "two"
-    assert scanner.next_token() == "three"
-    assert scanner.next_token() is None
+    s = scanner.Scanner(" one two three ")
+    assert s.next_token() == "one"
+    assert s.next_token() == "two"
+    assert s.next_token() == "three"
+    assert s.next_token() is None
 
-    scanner = io.Scanner("one")
-    assert scanner.next_token() == "one"
-    assert scanner.next_token() is None
+    s = scanner.Scanner("one")
+    assert s.next_token() == "one"
+    assert s.next_token() is None
 
 
 def test_scanner_next_int():
-    scanner = io.Scanner("1 2 3")
-    assert scanner.next_int() == 1
-    assert scanner.next_int() == 2
-    assert scanner.next_int() == 3
-    assert scanner.next_int() is None
+    s = scanner.Scanner("1 2 3")
+    assert s.next_int() == 1
+    assert s.next_int() == 2
+    assert s.next_int() == 3
+    assert s.next_int() is None
 
-    scanner = io.Scanner("1a 2b 3c")
-    assert scanner.next_int(require_space=False) == 1
-    assert scanner.next_token() == "a"
-    assert scanner.next_int(require_space=False) == 2
-    assert scanner.next_token() == "b"
-    assert scanner.next_int(require_space=False) == 3
-    assert scanner.next_token() == "c"
-    assert scanner.next_int() is None
+    s = scanner.Scanner("1a 2b 3c")
+    assert s.next_int(require_space=False) == 1
+    assert s.next_token() == "a"
+    assert s.next_int(require_space=False) == 2
+    assert s.next_token() == "b"
+    assert s.next_int(require_space=False) == 3
+    assert s.next_token() == "c"
+    assert s.next_int() is None
 
     with pytest.raises(ValueError):
-        scanner = io.Scanner("1b")
-        scanner.next_int()
+        s = scanner.Scanner("1b")
+        s.next_int()

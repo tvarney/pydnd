@@ -2,8 +2,6 @@
 
 import random
 
-import random
-
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import List, Optional
@@ -11,31 +9,31 @@ if TYPE_CHECKING:
 
 class Parser(object):
     def __init__(self):
-        self._valuestring = ""
+        self._data = ""
         self._length = 0
         self._index = 0
 
-    def init(self, valuestring: str):
-        self._valuestring = valuestring
-        self._length = len(self._valuestring)
+    def init(self, data: str):
+        self._data = data
+        self._length = len(self._data)
         self._index = 0
     
     def skip_whitespace(self) -> None:
         while self._index < self._length:
-            if not self._valuestring[self._index].isspace():
+            if not self._data[self._index].isspace():
                 return
             self._index += 1
     
     def number(self) -> int:
         if self._index >= self._length:
             raise ValueError("No more characters to parse")
-        ch = self._valuestring[self._index]
+        ch = self._data[self._index]
         if not ch.isdigit():
             raise ValueError("Invalid character '{}'".format(ch))
         value = int(ch)
         self._index += 1
         while self._index < self._length:
-            ch = self._valuestring[self._index]
+            ch = self._data[self._index]
             if not ch.isdigit():
                 return value
             value *= 10
@@ -46,7 +44,7 @@ class Parser(object):
     def consume(self, ch: str) -> bool:
         if self._index >= self._length:
             return False
-        if self._valuestring[self._index] == ch:
+        if self._data[self._index] == ch:
             self._index += 1
             return True
         return False
@@ -78,13 +76,13 @@ class RollValue(object):
 
 class Roll(object):
     @staticmethod
-    def parse(rollstring: str) -> 'Roll':
+    def parse(data: str) -> 'Roll':
         parser = Parser()
-        parser.init(rollstring)
+        parser.init(data)
         parser.skip_whitespace()
         num = parser.number()
         if not parser.consume('d'):
-            raise ValueError("Missing 'd' in rollstring")
+            raise ValueError("Missing 'd' in roll string")
         sides = parser.number()
         
         kwargs = dict()
@@ -134,40 +132,40 @@ class Roll(object):
     def roll(self, rand: 'Optional[random.Random]' = None) -> 'RollValue':
         if rand is None:
             rand = Roll._DefaultRandom
-        rolls = [rand.randint(1, self._sides) for i in range(self._num)]
+        rolls = [rand.randint(1, self._sides) for _ in range(self._num)]
         if self._drop_lowest > 0 or self._drop_highest > 0:
             rolls.sort()
-            vrolls = rolls[self._drop_lowest:self._num-self._drop_highest]
+            keep = rolls[self._drop_lowest:self._num-self._drop_highest]
             lowest = rolls[0:self._drop_lowest] if self._drop_lowest > 0 else list()
             highest = rolls[self._num-self._drop_highest:] if self._drop_highest > 0 else list()
-            return RollValue(vrolls, lowest, highest, self._add)
+            return RollValue(keep, lowest, highest, self._add)
         return RollValue(rolls, [], [], self._add)
-    
+
     def __str__(self) -> str:
-        strval = "{}d{}".format(self._num, self._sides)
+        value = "{}d{}".format(self._num, self._sides)
         if self._drop_highest > 0:
-            strval += "H{}".format(self._drop_highest)
+            value += "H{}".format(self._drop_highest)
         if self._drop_lowest > 0:
-            strval += "L{}".format(self._drop_lowest)
+            value += "L{}".format(self._drop_lowest)
         if self._add > 0:
-            strval += "+{}".format(self._add)
+            value += "+{}".format(self._add)
         elif self._add < 0:
-            strval += "-{}".format(self._add)
-        return strval
+            value += "-{}".format(self._add)
+        return value
 
 
 if __name__ == "__main__":
     import sys
-    progname = sys.argv.pop(0)
-    rolls = list()
-    verbosity = 1
+    _name = sys.argv.pop(0)
+    _rolls = list()
+    _verbosity = 1
     for arg in sys.argv:
         if arg == "-v" or arg == "--verbose":
-            verbosity = 2
+            _verbosity = 2
         elif arg == "-q" or arg == "--quite":
-            verbosity = 1
+            _verbosity = 1
         elif arg == "-h" or arg == "--help":
-            print("roll.py [-vqh] [rollstrings...]\n")
+            print("roll.py [-vqh] [rolls...]\n")
             print("  -h | --help")
             print("      Print this message and exit")
             print("  -q | --quite")
@@ -177,24 +175,23 @@ if __name__ == "__main__":
             sys.exit(1)
         else:
             try:
-                rolls.append(Roll.parse(arg))
+                _rolls.append(Roll.parse(arg))
             except ValueError as ve:
-                rolls.append((ve, arg))
+                _rolls.append((ve, arg))
     
-    for roll in rolls:
-        if type(roll) is tuple:
-            print("Error in {}: {}".format(roll[1], roll[0]))
+    for _roll in _rolls:
+        if type(_roll) is tuple:
+            print("Error in {}: {}".format(_roll[1], _roll[0]))
         else:
-            if verbosity == 0:
-                print(roll.roll().value())
-            elif verbosity == 1:
-                print("{} = {}".format(roll, roll.roll().value()))
+            if _verbosity == 0:
+                print(_roll.roll().value())
+            elif _verbosity == 1:
+                print("{} = {}".format(_roll, _roll.roll().value()))
             else:
-                rval = roll.roll()
-                print("{} = {}".format(roll, rval.value()))
-                print("  values: {}".format(rval.rolls()))
-                if len(rval.dropped_low()) > 0:
-                    print("  dropped low: {}".format(rval.dropped_low()))
-                if len(rval.dropped_high()) > 0:
-                    print("  dropped high: {}".format(rval.dropped_high()))
-
+                _result = _roll.roll()
+                print("{} = {}".format(_roll, _result.value()))
+                print("  values: {}".format(_result.rolls()))
+                if len(_result.dropped_low()) > 0:
+                    print("  dropped low: {}".format(_result.dropped_low()))
+                if len(_result.dropped_high()) > 0:
+                    print("  dropped high: {}".format(_result.dropped_high()))
