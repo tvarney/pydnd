@@ -1,7 +1,7 @@
 
 import pytest
 
-from dnd import money
+from dnd.item import money
 
 
 def test_parse_coin_spec_valid():
