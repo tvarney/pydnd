@@ -1,0 +1,151 @@
+items:
+  gear:
+    camping:
+      bathtub-collapsible:
+        name: "Bathtub, Collapsible"
+        description: |
+          After 10 minutes of assembly, this collection of wooden slats provides support for a cylindrical watertight
+          canvas cloth. It can hold enough water to allow 1 Medium creature to bathe in comfort without any risks that
+          might come from entering lakes, rivers, or other bodies of water
+        source: PZO1123
+        value: 15gp
+        weight: 20
+      bedroll:
+        name: "Bedroll"
+        description: |
+          This consists of two woolen sheets sewn together along the bottom and one side to create a bag for sleeping
+          in. Some have cloth straps along the open side so the bedroll can be tied closed while you are sleeping. It
+          can be rolled and tied into a tight coil for storage or transport. Most people use a blanket with the bedroll
+          to stay warm or provide a ground cushion.
+        source: PZO1123
+        value: 1sp
+        weight: 5
+      blanket:
+        name: "Blanket"
+        description: |
+          This warm, woven blanket has straps so it can be rolled up and tied. Blankets are often used in conjunction
+          with bedrolls to provide additional warmth or a ground cushion.
+        source: PZO1123
+        value: 5sp
+        weight: 3
+      blanket-winter:
+        name: "Winter Blanket"
+        description: "This is a fur blanket large enough for one person."
+        source: PZO1123
+        value: 5sp
+        weight: 3
+      chair-folding:
+        name: "Chair, Folding"
+        description: |
+          This simple folding chair has a wooden frame and canvas seat and back, making it easy to transport and set up
+          wherever you wish. It folds up easily and fits in a handy carrying bag. The chair can support up to 250
+          pounds with ease.
+        source: PZO1123
+        value: 2gp
+        weight: 10
+      ladder-folding:
+        name: "Ladder, Folding"
+        description: |
+          The hook, pole, and rungs of this 10-foot ladder are hinged, allowing you to fold it into a
+          3-foot-by-1-foot-by-1-foot bundle. Folding or unfolding it is a standard action.
+        source: PZO1123
+        value: 2gp
+        weight: 16
+      cot:
+        name: "Cot"
+        description: |
+          This elevated camp bed is made of wood and canvas, and is particularly useful when the ground is wet or
+          rocky. It is large enough for a full-grown human, but folds down into a 4-foot-by-9-inch cylindrical bag.
+        source: PZO1123
+        value: 1gp
+        weight: 30
+      hammock:
+        name: "Hammock"
+        description: |
+          This blanket or net is attached to strong ropes, allowing you to hang it from a heavy branch or two trees and
+          sleep above the ground. Climbing into or out of a hammock is a full-round-action. A successful DC 5 dexterity
+          check reduces this to a move action.
+        source: PZO1123
+        value: 1sp
+        weight: 3
+      soap:
+        name: "Soap"
+        description: |
+          You can use this thick block of soap to scrub clothes, pots, linens, or anything else that might be dirty. A
+          bar of soap has approximately 50 uses.
+        source: PZO1123
+        value: 1cp
+        weight: 0.5
+        consumable:
+          uses: 50
+      tent-small:
+        name: "Tent, Small"
+        description: "A small tent holds one Medium creature and takes 20 minutes to assemble."
+        source: PZO1123
+        value: 10gp
+        weight: 20
+      tent-medium:
+        name: "Tent, Medium"
+        description: "A medium tent holds two Medium creatures and takes 30 minutes to assemble."
+        source: PZO1123
+        value: 15gp
+        weight: 30
+      tent-large:
+        name: "Tent, Large"
+        description: "A large tent holds four Medium creatures and takes 45 minutes to assemble."
+        source: PZO1123
+        value: 30gp
+        weight: 40
+      tent-pavilion:
+        name: "Tent, Pavilion"
+        description: |
+          A huge open-air canopy, plust stakes, poles, and ropes. A pavilion holds 10 medium creatures and takes 90
+          minutes to assemble. Pavilion tents are large enough to accommodate a small fire in the center.
+        source: PZO1123
+        value: 100gp
+        weight: 50
+      tent-hanging:
+        name: "Tent, Hanging"
+        description: |
+          A hanging tent is a small tent (able to comfortably house a single Medium creature) with a teardrop shape,
+          which hangs from a sturdy anchor rope. The rope can be tied to a tree limb, grappling hookd, or even a piton
+          hammered into a cliff side. Hanging tents are used primarily in mountainous terrain (where no flat surface
+          may be available for camping) and swamps (where no dry ground may be available). Climbing in or out of a
+          hanging tent is a full-round action that requires a DC 10 Climb check. Failure indicates another attempt must
+          be made, while failure by 5 or more indicates the camper has fallen from the tent.
+        source: PZO1121
+        value: 20gp
+        weight: 15
+    hunting:
+      net-bell:
+        name: "Net, Bell"
+        description: |
+          Copper bells hang at each of the corners of this 5-foot-by-5-foot wire net. A bell net is designed to blanket
+          gear while you sleep, hunt, cook, or otherwise can't give it your full attention, raising an alarm if your
+          possessions are disturbed. Creatures attempting to access gear protected by a bell net must succeed at a
+          DC 25 Sleight of Hand check to avoid chiming the bells. Hearing the chiming bells requires a DC 0 Perception
+          check. Because the many bells chime when you move, traveling with a bell net gives you a -2 penalty on
+          Stealth checks.
+        source: PZO1123
+        value: 2gp
+        weight: 2
+      net-butterfly:
+        name: "Net, Butterfly"
+        description: ""
+        source: PZO1123
+        value: 5gp
+        weight: 2
+      net-camouflage:
+        name: "Netting, Camouflage"
+        description: ""
+        source: PZO1123
+        value: 20gp
+        weight: 5
+      scent-cloak:
+        name: "Scent Cloak"
+        description: ""
+        source: PPZO9410
+        value: 20gp
+        weight: 2
+        consumable:
+          uses: 20

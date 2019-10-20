@@ -27,11 +27,7 @@ class Item(object):
         if key is None:
             raise KeyError("Missing required field 'key'")
 
-        value = json_data.pop("value", None)
-        if value is None:
-            value = money.Money(None)
-        else:
-            value = money.Money(value)
+        value = money.Money(json_data.pop("value", None))
 
         name = json_data.pop("name", "")
         return Item(key, type_, name, value=value, **json_data)
@@ -41,9 +37,9 @@ class Item(object):
         self._type = type_
         self._name = name
         self._weight = float(kwargs.pop("weight", 0.001))  # type: float
-        self._value = kwargs.pop("value", money.Money())  # type: money.Money
-        self._desc = str(kwargs.pop("description", ""))  # type: str
-        self._source = str(kwargs.pop("source", ""))  # type: str
+        self._value = kwargs.pop("value", money.Money())   # type: money.Money
+        self._desc = str(kwargs.pop("description", ""))    # type: str
+        self._source = str(kwargs.pop("source", ""))       # type: str
 
         # These are derived from the key
         self._categories = self._key.split('.')

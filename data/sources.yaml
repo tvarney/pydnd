@@ -1,0 +1,59 @@
+sources:
+- id: PZO1110
+  name: "Core Rulebook"
+- id: PZO1112
+  name: "Bestiary"
+- id: PZO1114
+  name: "GameMastery Guide"
+- id: PZO1115
+  name: "Advanced Players Guide"
+- id: PZO1116
+  name: "Bestiary 2"
+- id: PZO1117
+  name: "Ultimate Magic"
+- id: PZO1118
+  name: "Ultimate Combat"
+- id: PZO1120
+  name: "Bestiary 3"
+- id: PZO1121
+  name: "Advanced Race Guide"
+- id: PZO1123
+  name: "Ultimate Equipment"
+- id: PZO1124
+  name: "NPC Codex"
+- id: PZO1125
+  name: "Ultimate Campaign"
+- id: PZO1126
+  name: "Mythic Adventures"
+- id: PZO1127
+  name: "Bestiary 4"
+- id: PZO1128
+  name: "Strategy Guide"
+- id: PZO1129
+  name: "Advanced Class Guide"
+- id: PZO1130
+  name: "Monster Codex"
+- id: PZO1131
+  name: "Pathfinder Unchained"
+- id: PZO1132
+  name: "Occult Adventures"
+- id: PZO1133
+  name: "Bestiary 5"
+- id: PZO1134
+  name: "Ultimate Intrigue"
+- id: PZO1135
+  name: "Horror Adventures"
+- id: PZO1136
+  name: "Villain Codex"
+- id: PZO1137
+  name: "Bestiary 6"
+- id: PZO1138
+  name: "Adventurer's Guide"
+- id: PZO1139
+  name: "Book of the Damned"
+- id: PZO1140
+  name: "Ultimate Wilderness"
+- id: PZO1141
+  name: "Planar Adventures"
+- id: PPZO9410
+  name: "Pathfinder Companion: Adventurer's Armory"
