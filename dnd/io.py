@@ -7,7 +7,7 @@ import dnd.item as item
 class FileData(object):
     def __init__(self) -> None:
         self._log = None
-        self.items = item.ItemCollection()
+        self.items = item.Collection()
 
     def log(self, message) -> None:
         if self._log is not None:
@@ -15,7 +15,7 @@ class FileData(object):
         else:
             print(message)
 
-    def items(self) -> item.ItemCollection:
+    def items(self) -> 'item.Collection':
         return self.items
 
     def load_filename(self, filename: str) -> None:
