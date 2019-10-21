@@ -1,26 +1,11 @@
 
 import dnd.variable as _v
+import dnd.actor.race as race
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Callable, Dict, List, Union, Optional
     from dnd.variable import Attribute, Points, StrVar, IntVar
-
-
-class Race(object):
-    def __init__(self, name, **kwargs) -> None:
-        self._name = name
-
-        self.any_bonus = int(kwargs.get("any", 0))
-        self.str_bonus = int(kwargs.get("strength", 0))
-        self.dex_bonus = int(kwargs.get("dexterity", 0))
-        self.con_bonus = int(kwargs.get("constitution", 0))
-        self.int_bonus = int(kwargs.get("intelligence", 0))
-        self.wis_bonus = int(kwargs.get("wisdom", 0))
-        self.cha_bonus = int(kwargs.get("charisma", 0))
-
-        self.speed = int(kwargs.get("speed", 30))
-        self.perks = list(kwargs.get("perks", list()))
 
 
 class Actor(object):
@@ -94,7 +79,7 @@ class Actor(object):
             self._init_roll = max(min(roll_value, 20), 1)
         return self._init_mod + min(self.dexterity().mod(), self._max_dex_mod)
 
-    def speed(self) -> IntVar:
+    def speed(self) -> 'IntVar':
         return self._speed
 
     def __getitem__(self, key: str):
